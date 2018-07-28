@@ -1,18 +1,18 @@
 var fs = require("fs");
 const tmi = require('tmi.js');
-var rp = require('request-promise');
 var connectConfig = require('./connectConfig.js');
 var ChatBotCom = require('./ChatBotCommands.js');
+var StreamApi = require('./StreamApi.js');
 var User = require('./user.js');
 //var users = []
 //var currentUsers = []
 var addr;
 var port;
-var streamState = false;
+
 var liveBeet;
 var pointbeet;
 console.log("start");
-load();
+User.load();
 console.log("file loaded");
 let commandPrefix = '!'
 
@@ -20,7 +20,7 @@ function giveUserPoints(user, points){
     user.points = parseInt(user.points)+ parseInt(points)
 }
 function giveLivePoints(points){
-    if(streamState == true)
+    if(StreamApi.streamState() == true)
         giveWatchersPoints(points);
 }
 function giveWatchersPoints(points){
@@ -50,7 +50,7 @@ function onMessageHandler(target,context,msg,self){
     return;
     }
     ChatBotCom.runCommand(target,context,msg);
-
+}
 function onUserJoin(channel, username){
     console.log(username + ' joined');
     //save();
@@ -72,20 +72,7 @@ function onConnectedHandler(addr, port){
 function noDissconnectedHandler(reason){
       console.log(`Womp womp, disconnected: ${reason}`)
     clearInterval(liveBeet);
-
-
+}
 function GetStreamingState(){
-    rp(connectConfig.htmlOptions)
-    .then(function(resp){
-        //console.log(resp);
-        if(typeof resp.data[0] !== 'undefined'){
-            streamState = true;
-            console.log('live');
-        }else{
-            streamState = false;
-            console.log('dead');
-        }
-    }).catch(function (err){
-       console.log("Error: " + err);  
-    });
+    StreamApi.GetStreamingState();
 }
