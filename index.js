@@ -2,18 +2,17 @@ var fs = require("fs");
 const tmi = require('tmi.js');
 var rp = require('request-promise');
 var connectConfig = require('./connectConfig.js');
-var users = []
-var currentUsers = []
+var ChatBotCom = require('./ChatBotCommands.js');
+var User = require('./user.js');
 var addr;
 var port;
 var streamState = false;
 var liveBeet;
 var pointbeet;
 console.log("start");
-load();
+User.load();
 console.log("file loaded");
 let commandPrefix = '!'
-//bot settings
 
 //bot commands go here
 let knownCommands = {
@@ -52,19 +51,7 @@ function givePoints(target, context, params){
     
     }
 }
-function giveUserPoints(user, points){
-    user.points = parseInt(user.points)+ parseInt(points)
-}
-function giveLivePoints(points){
-    if(streamState == true)
-        giveWatchersPoints(points);
-}
-function giveWatchersPoints(points){
-        for (var i = 0; i < currentUsers.length; i++) {
-            giveUserPoints(currentUsers[i],points); ;       
-    }
-    //console.log("make it rain");
-}
+
 function saveFile(){
     save();
 }
@@ -83,6 +70,7 @@ function echo (target, context, params) {
     console.log(`* Nothing to echo`)
   }
 }
+
 function sendMessage(target,context,message){
     if(context['message-type'] == 'whisper'){
         client.whisper(target,message);
@@ -90,7 +78,20 @@ function sendMessage(target,context,message){
         client.say(target,message);
     }
 }
-
+*/
+function giveUserPoints(user, points){
+    user.points = parseInt(user.points)+ parseInt(points)
+}
+function giveLivePoints(points){
+    if(streamState == true)
+        giveWatchersPoints(points);
+}
+function giveWatchersPoints(points){
+        for (var i = 0; i < User.currentUsers.length; i++) {
+            giveUserPoints(User.currentUsers[i],points); ;       
+    }
+    //console.log("make it rain");
+}
 //create a new client
 let client = new tmi.client(connectConfig.opts);
 //register our event handlers
@@ -111,34 +112,19 @@ function onMessageHandler(target,context,msg,self){
     console.log(`[${target}(${context['message-type']})]${context.username}: ${msg}`);
     return;
     }
-    
-    //split message in to individual workds
-    const parse = msg.slice(1).split(' ');
-    //the command name is the first one
-    const commandName = parse[0];
-    //the rest are the params
-    const params = parse.splice(1);
-    
-    //if the the command is know, lets do it
-    if(commandName in knownCommands){
-        
-        const command = knownCommands[commandName];
-        command(target, context, params);
-        console.log(`* Executed ${commandName} command for ${context.username}`)
-    } else{
-          console.log(`* Unknown command ${commandName} from ${context.username}`)  
-        }
+    ChatBotCom.runCommand(target,context,msg, client);
+
 }
 function onUserJoin(channel, username){
     console.log(username + ' joined');
     //save();
-    addUser(username);
-    addCurrentUsers(username);
+    User.addUser(username);
+    User.addCurrentUsers(username);
     
 }
 function onUserPart(channel, username){
     console.log(username + ' left');
-    removeCurrentUser(username);
+    User.removeCurrentUser(username);
 }
 function onConnectedHandler(addr, port){
     console.log("channels " + client.readyState());
@@ -152,6 +138,7 @@ function noDissconnectedHandler(reason){
     clearInterval(liveBeet);
 
 }
+
 function save(){
     fs.writeFile("Users.json",JSON.stringify(users),"utf8",onSave);
 }
@@ -202,7 +189,7 @@ function containsUsername(a, username) {
         }
     }
     return false;
-}
+}*/
 function GetStreamingState(){
     rp(connectConfig.htmlOptions)
     .then(function(resp){
