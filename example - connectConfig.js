@@ -1,4 +1,5 @@
-let opts = {
+module.exports = {
+    opts = {
     identity: {
         username: 'USERNAME',
         password: 'OARTH KEY'
@@ -6,8 +7,8 @@ let opts = {
     channels:[
         'CHANNEL TO JOIN'
     ]
-}
-module.exports = {
+},
+
     htmlOptions: {
     uri: 'https://api.twitch.tv/helix/streams',
     qs:{

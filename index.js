@@ -1,7 +1,7 @@
 var fs = require("fs");
 const tmi = require('tmi.js');
-var ConnectConfig = require('./connectConfig.js');
 var rp = require('request-promise');
+var connectConfig = require('./connectConfig.js');
 var users = []
 var currentUsers = []
 var addr;
@@ -20,9 +20,9 @@ let knownCommands = {
     //listAllUsers, 
     //listCurrentUsers, 
     getPoints,
-    //givePoints,
+    givePoints,
     echo,
-    //saveFile,
+    saveFile,
     help}
 
 function listAllUsers(target, context, params){
@@ -92,7 +92,7 @@ function sendMessage(target,context,message){
 }
 
 //create a new client
-let client = new tmi.client(ConnectConfig.opts);
+let client = new tmi.client(connectConfig.opts);
 //register our event handlers
 client.on('message',onMessageHandler)
 client.on('join',onUserJoin)
@@ -204,7 +204,7 @@ function containsUsername(a, username) {
     return false;
 }
 function GetStreamingState(){
-    rp(ConnectConfig.htmlOptions)
+    rp(connectConfig.htmlOptions)
     .then(function(resp){
         //console.log(resp);
         if(typeof resp.data[0] !== 'undefined'){
