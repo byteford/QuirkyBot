@@ -1,4 +1,4 @@
-
+var fs = require("fs");
 const tmi = require('tmi.js');
 var connectConfig = require('./connectConfig.js');
 var ChatBotCom = require('./ChatBotCommands.js');
@@ -41,6 +41,7 @@ client.on('disconnected',noDissconnectedHandler)
 client.connect();
 
 console.log("channels " + client.readyState());
+//target - name of the channel to connect to
 function onMessageHandler(target,context,msg,self){
     //if(self) {return} //ignore messages from bot
     
@@ -49,6 +50,7 @@ function onMessageHandler(target,context,msg,self){
     console.log(`[${target}(${context['message-type']})]${context.username}: ${msg}`);
     return;
     }
+
     ChatBotCom.runCommand(target,context,msg, client);
 }
 function onUserJoin(channel, username){

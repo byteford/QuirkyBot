@@ -59,10 +59,14 @@ function echo (target,context,msg, client) {
   }
 }
 function sendMessage(target,context,msg, client){
+    try{
         if(context['message-type'] == 'whisper'){
         client.whisper(target,msg);
     }else{
         client.say(target,msg);
+    }
+    }catch(err){
+        console.log("error: " + err);
     }
 }
 module.exports ={
@@ -73,7 +77,8 @@ runCommand: function(target,context,msg, client){
     const commandName = parse[0];
     //the rest are the params
     const params = parse.splice(1);
-    
+    var isMod = context.mod;
+    console.log("Mod: " + isMod);
     //if the the command is know, lets do it
     if(commandName in knownCommands){
         const command = knownCommands[commandName];
