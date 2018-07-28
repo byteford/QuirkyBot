@@ -49,7 +49,7 @@ function onMessageHandler(target,context,msg,self){
     console.log(`[${target}(${context['message-type']})]${context.username}: ${msg}`);
     return;
     }
-    ChatBotCom.runCommand(target,context,msg);
+    ChatBotCom.runCommand(target,context,msg, client);
 }
 function onUserJoin(channel, username){
     console.log(username + ' joined');
