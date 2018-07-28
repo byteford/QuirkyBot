@@ -1,4 +1,4 @@
-var fs = require("fs");
+
 const tmi = require('tmi.js');
 var connectConfig = require('./connectConfig.js');
 var ChatBotCom = require('./ChatBotCommands.js');

@@ -1,15 +1,10 @@
+var fs = require("fs");
 module.exports = {
     users: [],
 
-    user: function(username) {
-        this.username = username;
-        this.ID = _GenID();
-        this.points = parseInt(0);
+    save: function(){
+        _save();
     },
-    save: function() {
-        fs.writeFile("Users.json", JSON.stringify(users), "utf8", onSave);
-    },
-
     load: function() {
         users = require("./Users.json");
         console.log(users);
@@ -28,7 +23,7 @@ module.exports = {
             return;
         users.push(new user(username));
         console.log(username + ' is a new user');
-        save();
+        _save();
     },
     containsUsername: function(a,username){
         return _containsUsername(a,username);        
@@ -39,6 +34,16 @@ module.exports = {
     
 }
 var currentUsers = [];
+
+    var user = function(username) {
+        this.username = username;
+        this.ID = _GenID();
+        this.points = parseInt(0);
+    }
+
+    function _save() {
+        fs.writeFile("Users.json", JSON.stringify(users), "utf8", _onSave);
+    }
 function _onSave() {}
 function _containsUsername(a, username) {
         for (var i = 0; i < a.length; i++) {
