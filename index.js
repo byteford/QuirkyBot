@@ -39,7 +39,7 @@ client.on('connected',onConnectedHandler)
 client.on('disconnected',noDissconnectedHandler)
 
 client.connect();
-
+StreamApi.hoockSetUp();
 console.log("channels " + client.readyState());
 //target - name of the channel to connect to
 function onMessageHandler(target,context,msg,self){

@@ -1,6 +1,10 @@
 var User = require('./user.js');
 const tmi = require('tmi.js');
 //bot commands go here
+let modCommands ={
+    givePoints,
+    saveFile
+}
 let knownCommands = {
     //listAllUsers, 
     //listCurrentUsers, 
@@ -78,7 +82,15 @@ runCommand: function(target,context,msg, client){
     //the rest are the params
     const params = parse.splice(1);
     var isMod = context.mod;
-    console.log("Mod: " + isMod);
+    
+    if(isMod){
+        if(commandName in modCommands){
+            const command = modCommands[commandName];
+            command(target, context, params, client);
+            console.log(`* Executed ${commandName} Modcommand for ${context.username}`)
+            return;
+        }
+    }
     //if the the command is know, lets do it
     if(commandName in knownCommands){
         const command = knownCommands[commandName];
