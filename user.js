@@ -30,6 +30,9 @@ module.exports = {
     },
     getUserUn:function(username){
         return _getUserUn(username);
+    },
+    getConnectedUsers: function(){
+        return currentUsers;
     }
     
 }

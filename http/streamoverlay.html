@@ -56,7 +56,8 @@ function createPlayer(width, height,x,y){
     players.push(new Box(width,height,"red",x,y));
 }
 
-    socket.on('hi',function(msg){
+    socket.on('loadPlayer',function(playerInfo){
+        console.log(playerInfo)
         createPlayer(100,50,200,0);
     });
 </script>

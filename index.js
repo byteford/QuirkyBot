@@ -4,8 +4,9 @@ var connectConfig = require('./connectConfig.js');
 var ChatBotCom = require('./ChatBotCommands.js');
 var StreamApi = require('./StreamApi.js');
 var User = require('./user.js');
-const express = require('express');
-const app = express();
+const app = require('express')();
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
 //var users = []
 //var currentUsers = []
 var addr;
@@ -17,7 +18,6 @@ console.log("start");
 User.load();
 console.log("file loaded");
 let commandPrefix = '!'
-app.use(express.static('http'))
 
 function giveUserPoints(user, points){
     user.points = parseInt(user.points)+ parseInt(points)
@@ -42,7 +42,7 @@ client.on('connected',onConnectedHandler)
 client.on('disconnected',noDissconnectedHandler)
 
 client.connect();
-app.listen(3000, () => console.log('listening on port 3000!'));
+http.listen(3000, function(){console.log('listening on port 3000!')});
 console.log("channels " + client.readyState());
 //target - name of the channel to connect to
 function onMessageHandler(target,context,msg,self){
@@ -84,4 +84,15 @@ function GetStreamingState(){
 
 app.get('/', function(reg,res){
     res.sendFile('/twitchdev/chat bot/git/http/streamoverlay.html');
+});
+io.on('connection',function(socket){
+    console.log('a user connected IO');
+    
+    socket.on('disconnect', function(socket){
+        console.log('a user disconnected IO');
+    });
+    socket.on("setUp",function(){
+        console.log('Set Up');
+        socket.emit('loadPlayer',User.getConnectedUsers());
+    });
 });
