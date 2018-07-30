@@ -1,0 +1,28 @@
+{
+  "name": "git",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "express": "^4.16.3",
+    "request": "^2.87.0",
+    "request-promise": "^4.2.2",
+    "tmi": "^2.0.0",
+    "tmi.js": "^1.2.1",
+    "twitch-webhook": "^1.2.4"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/byteford/QuirkyBot.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/byteford/QuirkyBot/issues"
+  },
+  "homepage": "https://github.com/byteford/QuirkyBot#readme"
+}
