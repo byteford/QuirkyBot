@@ -81,3 +81,7 @@ function noDissconnectedHandler(reason){
 function GetStreamingState(){
     StreamApi.GetStreamingState();
 }
+
+app.get('/', function(reg,res){
+    res.sendFile('/twitchdev/chat bot/git/http/streamoverlay.html');
+});

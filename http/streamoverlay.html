@@ -11,12 +11,16 @@ canvas {
 </style>
 </head>
 <body onload="startGame()">
+<script src="/socket.io/socket.io.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
 <script>
+
 var players = [];
+    var socket = io();
 function startGame(){
     GameArea.start();
     createPlayer(100,50,0,0);
-    createPlayer(100,50,200,0);
+    socket.emit('setUp');
 }
 var GameArea={
     canvas:document.createElement("canvas"),
@@ -52,7 +56,11 @@ function createPlayer(width, height,x,y){
     players.push(new Box(width,height,"red",x,y));
 }
 
+    socket.on('hi',function(msg){
+        createPlayer(100,50,200,0);
+    });
 </script>
 html loaded
+
 </body>
 </html>
