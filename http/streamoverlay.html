@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<style>
+canvas {
+    border:1px solid #d3d3d3;
+    background-color: #00ff00;
+}
+<html>
+</style>
+</head>
+<body onload="startGame()">
+<script>
+var players = [];
+function startGame(){
+    GameArea.start();
+    createPlayer(100,50,0,0);
+    createPlayer(100,50,200,0);
+}
+var GameArea={
+    canvas:document.createElement("canvas"),
+    start:function(){
+        this.canvas.width = 1920;
+        this.canvas.height = 100;
+        this.context = this.canvas.getContext("2d");
+        document.body.insertBefore(this.canvas,document.body.childNodes[0]);
+        this.interval = setInterval(updateGameArea,20);
+    },
+    clear: function(){
+        this.context.clearRect(0,0,this.canvas.width, this.canvas.height);
+    }
+}
+function Box(width,height,colour,x,y){
+    this.x = x;
+    this.y = y;
+    this.width = width;
+    this.height = height;
+    this.update = function(){
+        ctx = GameArea.context;
+        ctx.fillRect(this.x,this.y,this.width, this.height);
+    }
+}
+function updateGameArea(){
+    GameArea.clear();
+    //gamepeice.update();
+    players.forEach(function(item){
+        item.update();
+    });
+}
+function createPlayer(width, height,x,y){
+    players.push(new Box(width,height,"red",x,y));
+}
+
+</script>
+html loaded
+</body>
+</html>

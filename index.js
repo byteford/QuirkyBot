@@ -4,6 +4,8 @@ var connectConfig = require('./connectConfig.js');
 var ChatBotCom = require('./ChatBotCommands.js');
 var StreamApi = require('./StreamApi.js');
 var User = require('./user.js');
+const express = require('express');
+const app = express();
 //var users = []
 //var currentUsers = []
 var addr;
@@ -15,6 +17,7 @@ console.log("start");
 User.load();
 console.log("file loaded");
 let commandPrefix = '!'
+app.use(express.static('http'))
 
 function giveUserPoints(user, points){
     user.points = parseInt(user.points)+ parseInt(points)
@@ -39,7 +42,7 @@ client.on('connected',onConnectedHandler)
 client.on('disconnected',noDissconnectedHandler)
 
 client.connect();
-StreamApi.hoockSetUp();
+app.listen(3000, () => console.log('listening on port 3000!'));
 console.log("channels " + client.readyState());
 //target - name of the channel to connect to
 function onMessageHandler(target,context,msg,self){
