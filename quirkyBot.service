@@ -1,0 +1,15 @@
+[Unit]
+Description=Abot
+
+[Service]
+ExecStart=/usr/local/bin/node/home/bitnami/ChatBot/index.js
+
+Restart=always
+RestartSec=10
+
+StandardOutput=syslog
+StandardError=syslog
+syslogIdentidier=QuirkyBot
+
+[Install]
+WantedBy=multi-user.target
