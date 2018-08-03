@@ -15,7 +15,7 @@ module.exports = {
         currentUsers.push(_getUserUn(username));
     },
     removeCurrentUser: function(username) {
-        if (containsUsername(currentUsers, username))
+        if (_containsUsername(currentUsers, username))
             currentUsers.pop(_getUserUn(username));
     },
     addUser: function(username) {

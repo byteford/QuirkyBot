@@ -18,7 +18,11 @@ function listAllUsers(target,context,params, client){
     sendMessage(target, context, JSON.stringify(users));
 }
 function listCurrentUsers(target,context,params, client){
-    sendMessage(target, context, JSON.stringify(currentUsers), client);
+    UserName = [];
+    for (var i = 0; i < User.currentUsers.length; i++) {
+        UserName.push(User.currentUsers[i].name);
+    }
+    sendMessage(target, context, JSON.stringify(UserName), client);
 }
 function getPoints(target,context,params, client){
         if(!User.containsUsername(users,params[0])){
