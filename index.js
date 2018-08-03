@@ -2,7 +2,7 @@ var fs = require("fs");
 const tmi = require('tmi.js');
 var connectConfig = require('./connectConfig.js');
 var ChatBotCom = require('./ChatBotCommands.js');
-//var StreamApi = require('./StreamApi.js');
+var StreamApi = require('./StreamAPI.js');
 var User = require('./user.js');
 const app = require('express')();
 var bodyParser = require('body-parser');
@@ -27,8 +27,8 @@ function giveUserPoints(user, points){
     user.points = parseInt(user.points)+ parseInt(points)
 }
 function giveLivePoints(points){
-    /*if(StreamApi.streamState() == true)
-        giveWatchersPoints(points);*/
+    if(StreamApi.streamState() == true)
+        giveWatchersPoints(points);
 }
 function giveWatchersPoints(points){
         for (var i = 0; i < User.getConnectedUsers.length; i++) {
@@ -92,7 +92,7 @@ function noDissconnectedHandler(reason){
     clearInterval(liveBeet);
 }
 function GetStreamingState(){
-   return false;// StreamApi.GetStreamingState();
+   StreamApi.GetStreamingState();
 }
 function StartTwitchWebHooks(){
     
@@ -108,6 +108,22 @@ app.post('/api/follower',function(reg,res){
     res.statusCode = 200;
     console.log(reg.body.data);
     console.log(reg.body.data['0'].from_id);
+     rp(
+     {
+         url:'https://api.twitch.tv/helix/users',
+         qs: {
+             'id': reg.body.data['0'].from_id
+         },
+         headers: {
+            'Client-ID': '9fhlxcfombc0k7v9obeqm0kna5g7yq'
+        },
+        json: true
+     }
+     ).then(function(resp){
+         console.log(resp.data[0].login + " has followed");
+     }).catch(function(err){
+        console.log("Error: " + err); 
+     });
     res.send();
 });
 
